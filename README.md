@@ -1,28 +1,47 @@
 ![CO-3](https://github.com/user-attachments/assets/ba8139b5-0c16-48dc-8185-a6f0cd2f0005)
 
-## 🥁 CarnaCode 2026 - Desafio 15 - Interpreter
+## CarnaCode 2026 - Challenge 15 - Interpreter
 
-Oi, eu sou o [seu nome aqui] e este é o espaço onde compartilho minha jornada de aprendizado durante o desafio **CarnaCode 2026**, realizado pelo [balta.io](https://balta.io). 👻
+Hi, I am Felipe Parizzi Galli, and this is the place where I share my learning journey during the **CarnaCode 2026** challenge, created by [balta.io](https://balta.io).
 
-Aqui você vai encontrar projetos, exercícios e códigos que estou desenvolvendo durante o desafio. O objetivo é colocar a mão na massa, testar ideias e registrar minha evolução no mundo da tecnologia.
+Here you will find projects, exercises, and code I am building throughout the challenge. The goal is to get hands-on practice, test ideas, and document my progress in software development.
 
-### Sobre este desafio
-No desafio **Interpreter** eu tive que resolver um problema real implementando o **Design Pattern** em questão.
-Neste processo eu aprendi:
-* ✅ Boas Práticas de Software
-* ✅ Código Limpo
-* ✅ SOLID
-* ✅ Design Patterns (Padrões de Projeto)
+### About This Challenge
 
-## Problema
-Um e-commerce precisa avaliar regras complexas de desconto escritas em formato texto (ex: "Se quantidade > 10 E valor > 1000 ENTÃO desconto 15%"). 
-O código atual usa muitos if/else e não permite que regras sejam configuradas dinamicamente.
+In the **Interpreter** challenge, I had to solve a real-world problem by implementing this specific **Design Pattern**.
 
-## Sobre o CarnaCode 2026
-O desafio **CarnaCode 2026** consiste em implementar todos os 23 padrões de projeto (Design Patterns) em cenários reais. Durante os 23 desafios desta jornada, os participantes são submetidos ao aprendizado e prática na idetinficação de códigos não escaláveis e na solução de problemas utilizando padrões de mercado.
+During this process, I practiced:
 
-### eBook - Fundamentos dos Design Patterns
-Minha principal fonte de conhecimento durante o desafio foi o eBook gratuito [Fundamentos dos Design Patterns](https://lp.balta.io/ebook-fundamentos-design-patterns).
+* Good software practices
+* Clean Code
+* SOLID
+* Design Patterns
 
-### Veja meu progresso no desafio
-[Incluir link para o repositório central]
+## Problem
+
+An e-commerce system needs to evaluate discount rules without relying on hardcoded conditional logic.
+
+The original code used several `if/else` statements inside the discount calculator. That approach made the rules difficult to compose, extend, and reuse because each new rule required changes directly in the calculator.
+
+## About CarnaCode 2026
+
+The **CarnaCode 2026** challenge consists of implementing all 23 design patterns in real-world scenarios. During the 23 challenges in this journey, participants practice identifying code that does not scale well and solving those problems with established design patterns.
+
+### eBook - Design Patterns Fundamentals
+
+My main learning resource during this challenge was the free eBook [Design Patterns Fundamentals](https://lp.balta.io/ebook-fundamentos-design-patterns).
+
+## Interpreter Pattern Implementation
+
+To implement the Interpreter pattern, the discount rules were moved out of `DiscountCalculator` and represented as dedicated interpreter objects.
+
+What was done:
+
+* Created the `IDiscountAccessRule` abstraction to define how every discount rule is interpreted against a `ShoppingCart`.
+* Implemented concrete rules such as `BiggerThanQuantityRule`, `BiggerThanValueRule`, `IsFromCategoryRule`, and `IsFirstPurchaseRule`.
+* Added composite rules with `AndRule`, `OrRule`, and `NotRule`, allowing complex business rules to be built by combining smaller rules.
+* Added `DiscountRule` to pair an interpreted access rule with its discount percentage.
+* Refactored `DiscountCalculator` so it no longer parses strings or validates rule keywords. It now only receives a typed `DiscountRule`, interprets it, and returns the configured discount when applicable.
+* Updated the console challenge example to compose discount rules directly in code instead of using rule strings like `ENTAO` or other text-based operators.
+
+This keeps the calculator focused on applying discounts while the rule objects are responsible for expressing and evaluating the business conditions.
