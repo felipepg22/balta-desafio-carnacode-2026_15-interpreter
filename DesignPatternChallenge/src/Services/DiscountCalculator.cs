@@ -1,5 +1,6 @@
 using System;
 using DesignPatternChallenge.Models;
+using DesignPatternChallenge.src.Interpreters;
 
 namespace DesignPatternChallenge.Services
 {
@@ -12,7 +13,7 @@ namespace DesignPatternChallenge.Services
             // "quantidade>10 E valor>1000 ENTAO 15"
             // "categoria=VIP ENTAO 20"
             // "primeirCompra=true ENTAO 10"
-
+            
             Console.WriteLine($"Avaliando regra: {ruleText}");
 
             // Tentativa ingênua de parsing
