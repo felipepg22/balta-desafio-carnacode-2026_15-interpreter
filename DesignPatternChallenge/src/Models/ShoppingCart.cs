@@ -4,7 +4,7 @@ namespace DesignPatternChallenge.Models
     {
         public decimal TotalValue { get; set; }
         public int ItemQuantity { get; set; }
-        public string CustomerCategory { get; set; }
+        public string CustomerCategory { get; set; } = string.Empty;
         public bool IsFirstPurchase { get; set; }
     }
 }

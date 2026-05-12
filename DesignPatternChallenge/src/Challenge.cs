@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DesignPatternChallenge.src.Interpreters;
 using DesignPatternChallenge.Models;
 using DesignPatternChallenge.Services;
 
@@ -37,12 +38,30 @@ namespace DesignPatternChallenge
                 IsFirstPurchase = true
             };
 
-            // Regras definidas como strings (idealmente viriam de banco de dados)
-            var rules = new List<string>
+            var rules = new List<DiscountRule>
             {
-                "quantidade>10 E valor>1000 ENTAO 15",
-                "categoria=VIP ENTAO 20",
-                "primeiraCompra=true ENTAO 10"
+                new DiscountRule(
+                    "Compra com quantidade e valor altos",
+                    new AndRule(
+                        new BiggerThanQuantityRule(10),
+                        new BiggerThanValueRule(1000)),
+                    15),
+                new DiscountRule(
+                    "Cliente VIP",
+                    new IsFromCategoryRule("VIP"),
+                    20),
+                new DiscountRule(
+                    "Primeira compra",
+                    new IsFirstPurchaseRule(),
+                    10),
+                new DiscountRule(
+                    "Cliente recorrente com carrinho relevante",
+                    new AndRule(
+                        new NotRule(new IsFirstPurchaseRule()),
+                        new OrRule(
+                            new BiggerThanQuantityRule(10),
+                            new BiggerThanValueRule(1000))),
+                    5)
             };
 
             Console.WriteLine("=== Carrinho 1 ===");
@@ -64,18 +83,14 @@ namespace DesignPatternChallenge
             }
 
             Console.WriteLine("\n=== PROBLEMAS ===");
-            Console.WriteLine("✗ Parsing manual limitado e frágil");
-            Console.WriteLine("✗ Não suporta expressões complexas (parênteses, precedência)");
-            Console.WriteLine("✗ Não suporta operadores lógicos compostos (E, OU, NÃO)");
-            Console.WriteLine("✗ Adicionar nova operação requer modificar código");
-            Console.WriteLine("✗ Difícil validar sintaxe das regras");
-            Console.WriteLine("✗ Impossível criar DSL (Domain Specific Language) rica");
-            Console.WriteLine("✗ Não há árvore de sintaxe para otimização");
+            Console.WriteLine("✓ Regras representadas por objetos interpretadores");
+            Console.WriteLine("✓ Composição com E, OU e NÃO sem parsing de strings");
+            Console.WriteLine("✓ Calculadora avalia uma abstração, não condições hardcoded");
 
-            Console.WriteLine("\n=== Expressões Desejadas (não suportadas) ===");
-            Console.WriteLine("• (quantidade > 10 OU valor > 500) E categoria = VIP");
-            Console.WriteLine("• NÃO primeiraCompra E quantidade >= 5");
-            Console.WriteLine("• (valor > 1000 E categoria = VIP) OU primeiraCompra");
+            Console.WriteLine("\n=== Regras Compostas ===");
+            Console.WriteLine("• new AndRule(new BiggerThanQuantityRule(10), new BiggerThanValueRule(1000))");
+            Console.WriteLine("• new OrRule(new BiggerThanQuantityRule(10), new BiggerThanValueRule(1000))");
+            Console.WriteLine("• new NotRule(new IsFirstPurchaseRule())");
 
             // Perguntas para reflexão:
             // - Como interpretar gramática de uma linguagem?
